@@ -241,12 +241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c0065f1d8df8b14687461dffe3d5b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestSlot:
-    slot: {fileID: 5232271551964858920, guid: a1613ea0a42bed94098ac59848dc5035, type: 3}
-    position: {x: 0, y: 0, z: 0}
-    slotType: 0
   tilemap: {fileID: 238105131}
   numberOfSlots: 4
+  chestSlot:
+    slotObject: {fileID: 5232271551964858920, guid: a1613ea0a42bed94098ac59848dc5035, type: 3}
+    slotType: 0
 --- !u!4 &1797567367
 Transform:
   m_ObjectHideFlags: 0
