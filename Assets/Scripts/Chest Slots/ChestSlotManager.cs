@@ -10,14 +10,14 @@ public class ChestSlotManager : MonoBehaviour
 
     [SerializeField] private Slot chestSlot;
 
-    private List<Slot> slots = new List<Slot>();
+    private Queue<Slot> slots = new Queue<Slot>();
 
-    private void Start()
+    private void Awake()
     {
         CreateSlots();
     }
 
-    private void CreateSlots()
+    public void CreateSlots()
     {
         Vector3Int tilePosition = tilemap.cellBounds.min;
 
@@ -26,48 +26,39 @@ public class ChestSlotManager : MonoBehaviour
             Slot slot = new Slot();
             GameObject emptySlot = Instantiate(chestSlot.slotObject, tilemap.GetCellCenterWorld(tilePosition), Quaternion.identity);
             slot.slotObject = emptySlot;
+            slot.slotPosition = tilemap.GetCellCenterWorld(tilePosition);
             slot.slotType = SlotType.Empty;
             emptySlot.transform.SetParent(tilemap.transform);
-            slots.Add(slot);
+            slots.Enqueue(slot);
 
             tilePosition.x = tilePosition.x + 5;
 
             if (i % 4 == 3)
             {
                 tilePosition.x = tilemap.cellBounds.min.x;
-                tilePosition.y = tilePosition.y - 3;
+                tilePosition.y = tilePosition.y - 2;
             }
         }
     }
 
-    public void AddItem(GameObject item)
+    public Vector3 GetEmptyPosition()
     {
-        foreach (Slot slot in slots)
+        if (slots.Count != 0)
         {
-            if (slot.slotType == SlotType.Empty)
-            {
-                slot.slotType = SlotType.Filled;
-                item.transform.position = slot.slotObject.transform.position;
-                item.transform.SetParent(slot.slotObject.transform);
-                break;
-            }
+            Slot slot = slots.Dequeue();
+            print(slot.slotType);
+            slot.slotType = SlotType.Filled;
+            return slot.slotPosition;
+        }
+        else
+        {
+            return Vector3.zero;
         }
     }
 
-    public void RemoveItem(GameObject item)
+    public int GetNumberOfSlots()
     {
-        foreach (Slot slot in slots)
-        {
-            if (slot.slotType == SlotType.Filled && slot.slotObject.transform.childCount > 0)
-            {
-                if (slot.slotObject.transform.GetChild(0).gameObject == item)
-                {
-                    slot.slotType = SlotType.Empty;
-                    item.transform.SetParent(null);
-                    break;
-                }
-            }
-        }
+        return numberOfSlots;
     }
 }
 
@@ -81,5 +72,6 @@ public enum SlotType
 public class Slot
 {
     public GameObject slotObject;
+    public Vector3 slotPosition;
     public SlotType slotType;
 }

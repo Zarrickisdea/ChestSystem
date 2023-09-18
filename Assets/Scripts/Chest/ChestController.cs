@@ -9,5 +9,31 @@ public class ChestController
     {
         chestModel = model;
         chestView = view;
+        GameObject.Instantiate<ChestView>(chestView);
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        chestView.transform.position = position;
+    }
+
+    public void SetController()
+    {
+        chestView.SetController(this);
+    }
+
+    public void SetRewards()
+    {
+
+    }
+
+    public float GetUnlockTime()
+    {
+        return chestModel.UnlockTime;
+    }
+
+    public void SetState(ChestState state)
+    {
+        chestView.StateMachine.ChangeState(state);
     }
 }

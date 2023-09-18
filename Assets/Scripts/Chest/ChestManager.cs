@@ -4,15 +4,12 @@ public class ChestManager : MonoBehaviour
 {
     [SerializeField] private ChestScriptableObjectList chestScriptableObjectList;
 
-    private void Start()
-    {
-        CreateChest();
-    }
-
-    private void CreateChest()
+    public void CreateChest()
     {
         ChestScriptableObject chestScriptableObject = chestScriptableObjectList.GetChest();
         ChestModel chestModel = new ChestModel(chestScriptableObject);
         ChestController chestController = new ChestController(chestScriptableObject.ChestView, chestModel);
+        chestController.SetController();
+        chestController.SetPosition(SystemManager.Instance.GetSlotPosition());
     }
 }
