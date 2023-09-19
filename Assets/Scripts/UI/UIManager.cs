@@ -44,6 +44,15 @@ public class UIManager : GenericSingleton<UIManager>
         }
     }
 
+    public void SetSpawnInteraction()
+    {
+        if (ChestSlotManager.Instance.GetNumberOfEmptySlots() > 0)
+        {
+            chestSpawnButton.interactable = !chestSpawnButton.interactable;
+        }
+
+    }
+
     public void UpdateCurrencyText()
     {
         totalCoinsText.text = "Coins: " + SystemManager.Instance.TotalCoins;
@@ -66,22 +75,29 @@ public class UIManager : GenericSingleton<UIManager>
 
     public void ChestUnlockOptionsControl(ChestController chestController)
     {
-        unlockOptionsPanel.gameObject.SetActive(!unlockOptionsPanel.gameObject.activeSelf);
-        if (unlockOptionsPanel.gameObject.activeSelf)
+        Button[] buttons = unlockOptionsPanel.GetComponentsInChildren<Button>();
+
+        foreach (Button button in buttons)
         {
-            Button[] buttons = unlockOptionsPanel.GetComponentsInChildren<Button>();
-
-            foreach (Button button in buttons)
-            {
-                button.onClick.RemoveAllListeners();
-            }
-
-            buttons[0].onClick.AddListener(() => ChestManager.Instance.UnlockGemsChest(chestController));
-            buttons[0].onClick.AddListener(() => unlockOptionsPanel.gameObject.SetActive(false));
-            buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "Unlock With: " + chestController.CalculateUnlockGems().ToString() + " Gems";
-            buttons[1].onClick.AddListener(() => ChestManager.Instance.UnlockTimerChest(chestController));
-            buttons[1].onClick.AddListener(() => unlockOptionsPanel.gameObject.SetActive(false));
-
+            button.onClick.RemoveAllListeners();
         }
+
+        buttons[0].GetComponentInChildren<TextMeshProUGUI>().text = "Unlock With: " + chestController.CalculateUnlockGems().ToString() + " Gems";
+        buttons[0].onClick.AddListener(() => ChestManager.Instance.UnlockGemsChest(chestController));
+        buttons[0].onClick.AddListener(() => unlockOptionsPanel.gameObject.SetActive(false));
+        buttons[0].onClick.AddListener(() => SetSpawnInteraction());
+        buttons[1].onClick.AddListener(() => ChestManager.Instance.UnlockTimerChest(chestController));
+        buttons[1].onClick.AddListener(() => unlockOptionsPanel.gameObject.SetActive(false));
+        buttons[1].onClick.AddListener(() => SetSpawnInteraction());
+        if (chestController.ChestView.stateMachine.CurrentState is ChestUnlockingState)
+        {
+            buttons[1].interactable = false;
+        }
+        else
+        {
+            buttons[1].interactable = true;
+        }
+        unlockOptionsPanel.gameObject.SetActive(true);
+        
     }
 }

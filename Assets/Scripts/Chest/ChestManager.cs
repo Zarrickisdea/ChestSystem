@@ -45,6 +45,7 @@ public class ChestManager : GenericSingleton<ChestManager>
 
     public void UnlockOptions(ChestController chestController)
     {
+        UIManager.Instance.SetSpawnInteraction();
         UIManager.Instance.ChestUnlockOptionsControl(chestController);
     }
 
