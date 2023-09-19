@@ -21,6 +21,7 @@ public class ChestController
     public void SetPosition(Transform position)
     {
         chestView.transform.position = position.position;
+        chestView.transform.SetParent(position);
     }
 
     public void SetRewards()
