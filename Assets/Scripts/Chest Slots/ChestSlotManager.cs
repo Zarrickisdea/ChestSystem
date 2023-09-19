@@ -1,59 +1,55 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
-public class ChestSlotManager : MonoBehaviour
+public class ChestSlotManager : GenericSingleton<ChestSlotManager>
 {
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private LayoutGroup layoutGroup;
     [SerializeField] private int numberOfSlots;
 
     [SerializeField] private Slot chestSlot;
 
     private Queue<Slot> slots = new Queue<Slot>();
 
-    private void Awake()
+    private void Start()
     {
         CreateSlots();
     }
 
     public void CreateSlots()
     {
-        Vector3Int tilePosition = tilemap.cellBounds.min;
-
         for (int i = 0; i < numberOfSlots; i++)
         {
             Slot slot = new Slot();
-            GameObject emptySlot = Instantiate(chestSlot.slotObject, tilemap.GetCellCenterWorld(tilePosition), Quaternion.identity);
-            slot.slotObject = emptySlot;
-            slot.slotPosition = tilemap.GetCellCenterWorld(tilePosition);
+            slot.slotObject = Instantiate(chestSlot.slotObject, layoutGroup.transform);
+            slot.slotPosition = slot.slotObject.transform.position;
+            slot.unlockButton = slot.slotObject.GetComponentInChildren<Button>();
+            UIManager.Instance.ChestUnlockButtonControl(slot.unlockButton);
             slot.slotType = SlotType.Empty;
-            emptySlot.transform.SetParent(tilemap.transform);
             slots.Enqueue(slot);
-
-            tilePosition.x = tilePosition.x + 5;
-
-            if (i % 4 == 3)
-            {
-                tilePosition.x = tilemap.cellBounds.min.x;
-                tilePosition.y = tilePosition.y - 2;
-            }
         }
     }
 
-    public Vector3 GetEmptyPosition()
+    public Slot GetEmptySlot()
     {
-        if (slots.Count != 0)
+        if (slots.Count > 0)
         {
             Slot slot = slots.Dequeue();
-            print(slot.slotType);
+            UIManager.Instance.ChestUnlockButtonControl(slot.unlockButton);
             slot.slotType = SlotType.Filled;
-            return slot.slotPosition;
+            return slot;
         }
         else
         {
-            return Vector3.zero;
+            return null;
         }
+    }
+
+    public int GetNumberOfEmptySlots()
+    {
+        return slots.Count;
     }
 
     public int GetNumberOfSlots()
@@ -72,6 +68,7 @@ public enum SlotType
 public class Slot
 {
     public GameObject slotObject;
+    public Button unlockButton;
     public Vector3 slotPosition;
     public SlotType slotType;
 }

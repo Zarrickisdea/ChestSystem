@@ -2,29 +2,29 @@ using UnityEngine;
 
 public class SystemManager : GenericSingleton<SystemManager>
 {
-    [SerializeField] private ChestSlotManager chestSlotManager;
-    [SerializeField] private ChestManager chestManager;
+    [SerializeField] private int totalCoins;
+    [SerializeField] private int totalGems;
 
-    private void Start()
+    public int TotalCoins => totalCoins;
+    public int TotalGems => totalGems;
+
+    public void AddCoins(int coins)
     {
-        if (chestSlotManager != null)
-        {
-            chestSlotManager.gameObject.SetActive(true);
-        }
-
-        if (chestManager != null)
-        {
-            chestManager.gameObject.SetActive(true);
-        }
+        totalCoins += coins;
     }
 
-    public Vector3 GetSlotPosition()
+    public void AddGems(int gems)
     {
-        return chestSlotManager.GetEmptyPosition();
+        totalGems += gems;
     }
 
-    public int GetNumberOfSlots()
+    public void RemoveCoins(int coins)
     {
-        return chestSlotManager.GetNumberOfSlots();
+        totalCoins -= coins;
+    }
+
+    public void RemoveGems(int gems)
+    {
+        totalGems -= gems;
     }
 }

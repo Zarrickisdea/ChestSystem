@@ -7,6 +7,8 @@ public class ChestUnlockedState : ChestState
     }
     public override void Enter()
     {
-        Debug.Log("ChestUnlockedState: Enter()");
+        chestView.Animator.SetBool("Open", true);
+        chestView.ChestController.AddRewards();
+        UIManager.Instance.ChestSpawnControl();
     }
 }

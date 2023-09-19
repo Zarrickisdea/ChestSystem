@@ -20,6 +20,11 @@ public class ChestUnlockingState : ChestState
         }
     }
 
+    public override void UpdateLate()
+    {
+        UIManager.Instance.ChestUnlockTimerControl(unlockTime);
+    }
+
     public override void Exit()
     {
         unlockTime = 0;

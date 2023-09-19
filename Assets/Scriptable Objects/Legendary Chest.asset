@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Legendary Chest
   m_EditorClassIdentifier: 
   chestView: {fileID: -8215441051048549274, guid: 1608afa71940d4a47a7bb0405eb209ef, type: 3}
-  minCoins: 0
-  maxCoins: 0
-  minGems: 0
-  maxGems: 0
-  chestType: 0
-  unlockTime: 0
+  minCoins: 1000
+  maxCoins: 1200
+  minGems: 80
+  maxGems: 100
+  chestType: 3
+  unlockTime: 10800

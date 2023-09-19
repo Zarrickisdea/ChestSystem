@@ -1,26 +1,31 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChestView : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
     private ChestController chestController;
 
-    private StateMachine stateMachine;
+    public StateMachine stateMachine { get; private set; }
 
-    private ChestQueuedState chestQueuedState;
-    private ChestLockedState chestLockedState;
-    private ChestUnlockingState chestUnlockingState;
-    private ChestUnlockedState chestUnlockedState;
+    public ChestQueuedState chestQueuedState { get; private set; }
+    public ChestUnlockingState chestUnlockingState { get; private set; }
+    public ChestUnlockedState chestUnlockedState { get; private set; }
 
-    public ChestController ChestController => chestController;
-    public StateMachine StateMachine => stateMachine;
+    public ChestController ChestController
+    {
+        get => chestController;
+    }
+
+    public Animator Animator
+    {
+        get => animator;
+    }
 
     private void Awake()
     {
         stateMachine = new StateMachine();
         chestQueuedState = new ChestQueuedState(this);
-        chestLockedState = new ChestLockedState(this);
-        chestUnlockingState = new ChestUnlockingState(this);
-        chestUnlockedState = new ChestUnlockedState(this);
     }
 
     private void Start()
@@ -47,5 +52,4 @@ public class ChestView : MonoBehaviour
     {
         this.chestController = chestController;
     }
-
 }

@@ -8,5 +8,6 @@ public class ChestQueuedState : ChestState
     public override void Enter()
     {
         chestView.ChestController.SetRewards();
+        chestView.Animator.SetBool("Open", false);
     }
 }

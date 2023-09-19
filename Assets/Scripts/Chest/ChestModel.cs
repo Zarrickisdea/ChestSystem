@@ -12,6 +12,8 @@ public class ChestModel
     public int MaxCoins { get; }
     public int MinGems { get; }
     public int MaxGems { get; }
+    public int RewardCoins { get; set; }
+    public int RewardGems { get; set; }
     public ChestType ChestType { get; }
     public float UnlockTime { get; }
     public ChestState ChestState { get; set; }
@@ -24,11 +26,5 @@ public class ChestModel
         MaxGems = chestScriptableObject.MaxGems;
         ChestType = chestScriptableObject.ChestType;
         UnlockTime = chestScriptableObject.UnlockTime;
-    }
-
-    public void SetState(ChestState chestState)
-    {
-        ChestState = chestState;
-        ChestState.Enter();
     }
 }

@@ -119,3 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3538e57ec40a4a47b6b62c993074422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 6875214088396338737}
+  unlockButton: {fileID: 0}
