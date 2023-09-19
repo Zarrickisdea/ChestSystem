@@ -1,9 +1,13 @@
+using TMPro;
 using UnityEngine;
 
 public class ChestController
 {
     private ChestView chestView;
     private ChestModel chestModel;
+
+    public TextMeshProUGUI TimerText { get; set; }
+    public Slot CurrentSlot { get; set; }
 
     public ChestView ChestView { get => chestView; }
 
@@ -36,6 +40,11 @@ public class ChestController
         return chestModel.UnlockTime;
     }
 
+    public int CalculateUnlockGems()
+    {
+        return Mathf.RoundToInt(chestModel.UnlockTime / 60);
+    }
+
     public void SetState(ChestState state)
     {
         chestModel.ChestState = state;
@@ -54,6 +63,11 @@ public class ChestController
 
     public void UnlockWithGems(int gems)
     {
+        if (SystemManager.Instance.TotalGems < gems)
+        {
+            UIManager.Instance.WarningTextControl("Not enough gems!");
+            return;
+        }
         SystemManager.Instance.RemoveGems(gems);
         SetState(new ChestUnlockedState(chestView));
     }
@@ -61,5 +75,15 @@ public class ChestController
     public void UnlockWithTimer()
     {
         SetState(new ChestUnlockingState(chestView));
+    }
+
+    public void SetSlot(Slot slot)
+    {
+        CurrentSlot = slot;
+    }
+
+    public void RemoveChest()
+    {
+        GameObject.Destroy(chestView.gameObject);
     }
 }

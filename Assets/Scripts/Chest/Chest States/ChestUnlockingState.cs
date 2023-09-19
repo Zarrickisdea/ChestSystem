@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class ChestUnlockingState : ChestState
 {
-    private float unlockTime;
     public ChestUnlockingState(ChestView chestView) : base(chestView)
     {
     }
     public override void Enter()
     {
-        unlockTime = chestView.ChestController.GetUnlockTime();
+        stateTimer = chestView.ChestController.GetUnlockTime();
+        UIManager.Instance.SetObjectState(chestView.ChestController.TimerText.gameObject, true);
     }
 
     public override void UpdateLogic()
     {
-        unlockTime -= Time.deltaTime;
-        if (unlockTime <= 0)
+        stateTimer -= Time.deltaTime;
+        if (stateTimer <= 0)
         {
             chestView.ChestController.SetState(new ChestUnlockedState(chestView));
         }
@@ -22,11 +22,11 @@ public class ChestUnlockingState : ChestState
 
     public override void UpdateLate()
     {
-        UIManager.Instance.ChestUnlockTimerControl(unlockTime);
+        UIManager.Instance.ChestUnlockTimerControl(chestView.ChestController.TimerText, stateTimer);
     }
 
     public override void Exit()
     {
-        unlockTime = 0;
+        stateTimer = 0;
     }
 }
