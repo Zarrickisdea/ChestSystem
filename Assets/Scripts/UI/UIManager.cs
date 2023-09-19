@@ -100,4 +100,10 @@ public class UIManager : GenericSingleton<UIManager>
         unlockOptionsPanel.gameObject.SetActive(true);
         
     }
+
+    public void SetRewardsPanel(GameObject rewardsPanel, int coinRewards, int gemRewards)
+    {
+        rewardsPanel.SetActive(true);
+        rewardsPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Coins: " + coinRewards.ToString() + "\nGems: " + gemRewards.ToString();
+    }
 }

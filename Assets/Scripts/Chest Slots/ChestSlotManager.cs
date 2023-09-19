@@ -34,6 +34,8 @@ public class ChestSlotManager : GenericSingleton<ChestSlotManager>
         slot.slotPosition = slot.slotObject.transform.position;
         slot.unlockButton = slot.slotObject.GetComponentInChildren<Button>();
         slot.timer = slot.slotObject.GetComponentsInChildren<TextMeshProUGUI>()[1];
+        slot.rewardsPanel = slot.slotObject.GetComponentsInChildren<RectTransform>()[4].gameObject;
+        UIManager.Instance.SetObjectState(slot.rewardsPanel, false);
         UIManager.Instance.SetObjectState(slot.timer.gameObject, false);
         UIManager.Instance.SetObjectState(slot.unlockButton.gameObject, false);
         slot.slotType = SlotType.Empty;
@@ -84,6 +86,7 @@ public enum SlotType
 public class Slot
 {
     public GameObject slotObject;
+    public GameObject rewardsPanel;
     public Button unlockButton;
     public TextMeshProUGUI timer;
     public Vector3 slotPosition;
