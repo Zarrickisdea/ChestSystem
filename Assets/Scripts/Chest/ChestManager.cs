@@ -3,9 +3,14 @@ using UnityEngine;
 public class ChestManager : GenericSingleton<ChestManager>
 {
     [SerializeField] private ChestScriptableObjectList chestScriptableObjectList;
+    private int activeChestCount = 0;
 
     public void CreateChest()
     {
+        if (activeChestCount >= ChestSlotManager.Instance.GetNumberOfSlots())
+        {
+            return;
+        }
         Slot slot = ChestSlotManager.Instance?.GetEmptySlot();
         if (slot != null)
         {
@@ -14,7 +19,11 @@ public class ChestManager : GenericSingleton<ChestManager>
             ChestModel chestModel = new ChestModel(chestScriptableObject);
             ChestController chestController = new ChestController(chestScriptableObject.ChestView, chestModel);
             chestController.SetPosition(slotTransform);
+            chestController.TimerText = slot.timer;
+            chestController.SetSlot(slot);
+            slot.unlockButton.onClick.RemoveAllListeners();
             slot.unlockButton.onClick.AddListener(() => UnlockOptions(chestController));
+            activeChestCount++;
         }
         else
         {
@@ -23,13 +32,24 @@ public class ChestManager : GenericSingleton<ChestManager>
         UIManager.Instance.ChestSpawnControl();
     }
 
-    public void UnlockChest(ChestController chestController)
+    public void UnlockTimerChest(ChestController chestController)
     {
-        chestController.SetState(new ChestUnlockedState(chestController.ChestView));
+        chestController.UnlockWithTimer();
+    }
+
+    public void UnlockGemsChest(ChestController chestController)
+    {
+        int unlockGems = chestController.CalculateUnlockGems();
+        chestController.UnlockWithGems(unlockGems);
     }
 
     public void UnlockOptions(ChestController chestController)
     {
         UIManager.Instance.ChestUnlockOptionsControl(chestController);
+    }
+
+    public void RemoveChest()
+    {
+        activeChestCount--;
     }
 }
