@@ -1,18 +1,35 @@
 using UnityEngine;
 
-public class ChestManager : MonoBehaviour
+public class ChestManager : GenericSingleton<ChestManager>
 {
     [SerializeField] private ChestScriptableObjectList chestScriptableObjectList;
 
-    private void Start()
+    public void CreateChest()
     {
-        CreateChest();
+        Slot slot = ChestSlotManager.Instance?.GetEmptySlot();
+        if (slot != null)
+        {
+            Transform slotTransform = slot.slotObject.transform;
+            ChestScriptableObject chestScriptableObject = chestScriptableObjectList.GetChest();
+            ChestModel chestModel = new ChestModel(chestScriptableObject);
+            ChestController chestController = new ChestController(chestScriptableObject.ChestView, chestModel);
+            chestController.SetPosition(slotTransform);
+            slot.unlockButton.onClick.AddListener(() => UnlockOptions(chestController));
+        }
+        else
+        {
+            return;
+        }
+        UIManager.Instance.ChestSpawnControl();
     }
 
-    private void CreateChest()
+    public void UnlockChest(ChestController chestController)
     {
-        ChestScriptableObject chestScriptableObject = chestScriptableObjectList.GetChest();
-        ChestModel chestModel = new ChestModel(chestScriptableObject);
-        ChestController chestController = new ChestController(chestScriptableObject.ChestView, chestModel);
+        chestController.SetState(new ChestUnlockedState(chestController.ChestView));
+    }
+
+    public void UnlockOptions(ChestController chestController)
+    {
+        UIManager.Instance.ChestUnlockOptionsControl(chestController);
     }
 }

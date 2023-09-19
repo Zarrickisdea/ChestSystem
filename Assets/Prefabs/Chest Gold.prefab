@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -143904295, guid: 98c48350bb81396489ef19b46ff91ed0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -119,3 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3538e57ec40a4a47b6b62c993074422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 7260773162180560550}
+  unlockButton: {fileID: 0}

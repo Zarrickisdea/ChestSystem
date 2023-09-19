@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rare Chest
   m_EditorClassIdentifier: 
   chestView: {fileID: -1785064944748568499, guid: 18ee9d0f6acf4614cbc9db2ce3cc0dfb, type: 3}
-  minCoins: 0
-  maxCoins: 0
-  minGems: 0
-  maxGems: 0
-  chestType: 0
-  unlockTime: 0
+  minCoins: 300
+  maxCoins: 500
+  minGems: 20
+  maxGems: 40
+  chestType: 1
+  unlockTime: 1800

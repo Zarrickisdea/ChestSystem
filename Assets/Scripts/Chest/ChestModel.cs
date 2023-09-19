@@ -6,22 +6,17 @@ public enum ChestType
     Legendary
 }
 
-public enum ChestState
-{
-    Queued,
-    Locked,
-    Unlocking,
-    Unlocked
-}
-
 public class ChestModel
 {
     public int MinCoins { get; }
     public int MaxCoins { get; }
     public int MinGems { get; }
     public int MaxGems { get; }
+    public int RewardCoins { get; set; }
+    public int RewardGems { get; set; }
     public ChestType ChestType { get; }
     public float UnlockTime { get; }
+    public ChestState ChestState { get; set; }
 
     public ChestModel (ChestScriptableObject chestScriptableObject)
     {

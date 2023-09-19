@@ -1,73 +1,60 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
-public class ChestSlotManager : MonoBehaviour
+public class ChestSlotManager : GenericSingleton<ChestSlotManager>
 {
-    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private LayoutGroup layoutGroup;
     [SerializeField] private int numberOfSlots;
 
     [SerializeField] private Slot chestSlot;
 
-    private List<Slot> slots = new List<Slot>();
+    private Queue<Slot> slots = new Queue<Slot>();
 
     private void Start()
     {
         CreateSlots();
     }
 
-    private void CreateSlots()
+    public void CreateSlots()
     {
-        Vector3Int tilePosition = tilemap.cellBounds.min;
-
         for (int i = 0; i < numberOfSlots; i++)
         {
             Slot slot = new Slot();
-            GameObject emptySlot = Instantiate(chestSlot.slotObject, tilemap.GetCellCenterWorld(tilePosition), Quaternion.identity);
-            slot.slotObject = emptySlot;
+            slot.slotObject = Instantiate(chestSlot.slotObject, layoutGroup.transform);
+            slot.slotPosition = slot.slotObject.transform.position;
+            slot.unlockButton = slot.slotObject.GetComponentInChildren<Button>();
+            UIManager.Instance.ChestUnlockButtonControl(slot.unlockButton);
             slot.slotType = SlotType.Empty;
-            emptySlot.transform.SetParent(tilemap.transform);
-            slots.Add(slot);
-
-            tilePosition.x = tilePosition.x + 5;
-
-            if (i % 4 == 3)
-            {
-                tilePosition.x = tilemap.cellBounds.min.x;
-                tilePosition.y = tilePosition.y - 3;
-            }
+            slots.Enqueue(slot);
         }
     }
 
-    public void AddItem(GameObject item)
+    public Slot GetEmptySlot()
     {
-        foreach (Slot slot in slots)
+        if (slots.Count > 0)
         {
-            if (slot.slotType == SlotType.Empty)
-            {
-                slot.slotType = SlotType.Filled;
-                item.transform.position = slot.slotObject.transform.position;
-                item.transform.SetParent(slot.slotObject.transform);
-                break;
-            }
+            Slot slot = slots.Dequeue();
+            UIManager.Instance.ChestUnlockButtonControl(slot.unlockButton);
+            slot.slotType = SlotType.Filled;
+            return slot;
+        }
+        else
+        {
+            return null;
         }
     }
 
-    public void RemoveItem(GameObject item)
+    public int GetNumberOfEmptySlots()
     {
-        foreach (Slot slot in slots)
-        {
-            if (slot.slotType == SlotType.Filled && slot.slotObject.transform.childCount > 0)
-            {
-                if (slot.slotObject.transform.GetChild(0).gameObject == item)
-                {
-                    slot.slotType = SlotType.Empty;
-                    item.transform.SetParent(null);
-                    break;
-                }
-            }
-        }
+        return slots.Count;
+    }
+
+    public int GetNumberOfSlots()
+    {
+        return numberOfSlots;
     }
 }
 
@@ -81,5 +68,7 @@ public enum SlotType
 public class Slot
 {
     public GameObject slotObject;
+    public Button unlockButton;
+    public Vector3 slotPosition;
     public SlotType slotType;
 }

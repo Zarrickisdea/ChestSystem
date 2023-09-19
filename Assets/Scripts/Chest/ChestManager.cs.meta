@@ -3,7 +3,8 @@ guid: 414a335d40ecddb47a3b005e14d480b6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - chestScriptableObjectList: {fileID: 11400000, guid: 9de28aa7ae6ac834d94b79164a1ad8fe, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
