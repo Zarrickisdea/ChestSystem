@@ -565,7 +565,7 @@ MonoBehaviour:
   noMoreSlotsText: {fileID: 679803331}
   totalCoinsText: {fileID: 1356004085}
   totalGemsText: {fileID: 228673101}
-  warningText: {fileID: 0}
+  warningText: {fileID: 612950242}
   unlockOptionsPanel: {fileID: 1686331011}
 --- !u!4 &306712760
 Transform:
@@ -1899,6 +1899,7 @@ MonoBehaviour:
   numberOfSlots: 4
   chestSlot:
     slotObject: {fileID: 5069024427569048964, guid: 1ec405f4b311242419e5e2e6dd845e4f, type: 3}
+    rewardsPanel: {fileID: 0}
     unlockButton: {fileID: 0}
     timer: {fileID: 0}
     slotPosition: {x: 0, y: 0, z: 0}

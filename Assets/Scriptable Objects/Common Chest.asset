@@ -15,7 +15,7 @@ MonoBehaviour:
   chestView: {fileID: 1815607233829297416, guid: 9a0c1e41fbf87104d8be176362992340, type: 3}
   minCoins: 100
   maxCoins: 200
-  minGems: 10
-  maxGems: 20
+  minGems: 50
+  maxGems: 100
   chestType: 0
   unlockTime: 900
